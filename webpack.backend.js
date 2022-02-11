@@ -21,6 +21,7 @@ module.exports = {
         ]
     },
     externals: [nodeExternals()],
+    /*
     plugins: [
             new CopyPlugin({
                 patterns: [
@@ -31,4 +32,5 @@ module.exports = {
                 },
             })
         ]
+     */
 }
