@@ -3,9 +3,10 @@ import java.lang.Integer.parseInt
 var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
 var GIT_BRANCH = "master"
 var PRE_VERSION = 7
-
-var BUILD = parseInt(System.getenv("BUILD_NUMBER")) + PRE_VERSION
-
+var BUILD = 38
+if(System.getenv("BUILD_NUMBER") != null){
+    BUILD = parseInt(System.getenv("BUILD_NUMBER")) + PRE_VERSION
+}
 /* build style 1.2 */
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
 val BuildMess = file("./Release.txt").takeIf { it.exists() }?.let {it.readText()}
