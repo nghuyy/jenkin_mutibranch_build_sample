@@ -161,22 +161,22 @@ fun getFromPackage(): String {
             releases.values.removeIf{
                 it == BuildMess
             }
-            releases[versioncode] = "$BuildMess"
+            releases[version_code] = "$BuildMess"
             json["releases"] = releases
             var releaseDate = mutableMapOf<Any, Any>()
             if (json.containsKey("release_date")) {
                 releaseDate = json.get("release_date") as MutableMap<Any, Any>
             }
-            releaseDate.put(versioncode, BUILD_TIME)
+            releaseDate.put(version_code, BUILD_TIME)
             json.put("release_date", releaseDate)
         }
     }else{
         if(BuildMess.equals("") || BuildMess.equals(" ") || BuildMess == null) {}else{
             val releases = mutableMapOf<Any, Any>()
-            releases.put(versioncode, BuildMess)
+            releases.put(version_code, BuildMess)
             json.put("releases", releases)
             val releaseDate = mutableMapOf<Any, Any>()
-            releaseDate.put(versioncode, BUILD_TIME)
+            releaseDate.put(version_code, BUILD_TIME)
             json.put("release_date", releaseDate)
         }
     }
@@ -187,7 +187,7 @@ fun getFromPackage(): String {
     File("./package.json").writeText(
             groovy.json.JsonBuilder(json).toPrettyString(),
             java.nio.charset.Charset.forName("utf-8"))
-    return versioncode
+    return version_code
 }
 
 fun writeReleaseNotes(){
