@@ -8,9 +8,6 @@ Require:
  npm
  webpack-cli
 
-Trigger:
-  https://build.vnapps.com/generic-webhook-trigger/invoke?token=
-
 How to dev?
     Checkout dev branch
     Change code
@@ -20,4 +17,11 @@ How to release?
     Merge code from dev
     Push
      
+```
+
+Jenkin Config:
+
+```
+Trigger:
+  https://build.vnapps.com/generic-webhook-trigger/invoke?token=
 ```
