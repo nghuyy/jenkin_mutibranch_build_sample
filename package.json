@@ -15,5 +15,14 @@
     "bugs": {
         "url": "https://github.com/nghuyy/jenkin_mutibranch_build_sample/issues"
     },
-    "homepage": "https://github.com/nghuyy/jenkin_mutibranch_build_sample#readme"
+    "homepage": "https://github.com/nghuyy/jenkin_mutibranch_build_sample#readme",
+    "devDependencies": {
+        "copy-webpack-plugin": "^10.2.4",
+        "css-minimizer-webpack-plugin": "^3.4.1",
+        "mini-css-extract-plugin": "^2.5.3",
+        "style-loader": "^3.3.1",
+        "terser-webpack-plugin": "^5.3.1",
+        "webpack": "^5.68.0",
+        "webpack-node-externals": "^3.0.0"
+    }
 }

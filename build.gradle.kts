@@ -80,8 +80,8 @@ fun BackEnd() {
 }
 
 fun Build() {
-    //FrontEnd()
-    //BackEnd()
+    FrontEnd()
+    BackEnd()
     createPackageInfo()
 }
 
