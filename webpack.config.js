@@ -18,6 +18,7 @@ module.exports = {
             "node_modules"
         ]
     },
+
     plugins: [
         new MiniCssExtractPlugin(),
         new CopyPlugin({
