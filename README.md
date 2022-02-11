@@ -24,4 +24,14 @@ Jenkin Config:
 ```
 Trigger:
   https://build.vnapps.com/generic-webhook-trigger/invoke?token=
+
+
+Github Release 
+Variable: ref
+Expression: $.ref -> jsonpath 
+  
+Filter
+Expression: ^(refs/heads/release)$
+Text: $ref  
+
 ```
