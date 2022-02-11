@@ -35,3 +35,8 @@ Expression: ^(refs/heads/release)$
 Text: $ref  
 
 ```
+
+Bitbucket:
+```
+    Add user: huyndx@gmail.com(Jenkins Server) access for read/write package
+```
