@@ -2,6 +2,9 @@ import java.lang.Integer.parseInt
 /* Define */
 var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
 var GIT_BRANCH = "master"
+var PRE_VERSION = 7
+
+var BUILD = parseInt(System.getenv('BUILD_NUMBER')) + PRE_VERSION
 
 /* build style 1.2 */
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
@@ -9,6 +12,7 @@ val BuildMess = file("./Release.txt").takeIf { it.exists() }?.let {it.readText()
 val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
+
 var git_versioncode = getFromPackage()
 
 task("Clean") {
@@ -148,10 +152,9 @@ fun getVersionCode(): String {
 }
 
 fun getFromPackage(): String {
-    val code = parseInt(package_info?.get("versioncode").toString()) + 1
-    var versioncode = "1.1.${code}"
+    val version = package_info?.get("version").toString()
+    var version_code = "${version}.${BUILD}"
     val json = package_info?.toMutableMap()!!
-
     if(json.containsKey("releases")) {
         val releases = json.get("releases") as MutableMap<Any,Any>
         if(BuildMess.equals("") || BuildMess.equals(" ") || BuildMess == null){}else {
@@ -177,10 +180,9 @@ fun getFromPackage(): String {
             json.put("release_date", releaseDate)
         }
     }
-
     json.run {
-        replace("version", versioncode)
-        replace("versioncode", code)
+        replace("build", BUILD)
+        replace("version_code", version_code)
     }
     File("./package.json").writeText(
             groovy.json.JsonBuilder(json).toPrettyString(),

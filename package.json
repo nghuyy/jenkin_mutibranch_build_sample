@@ -1,7 +1,6 @@
 {
     "name": "jenkin_mutibranch_build_sample",
-    "version": "1.1.6",
-    "versioncode": 7,
+    "version": "1.1",
     "description": "Nodejs WebProject\r ```\r Require:\r  Gradle >= 7.3.3\r  NodeJs >= 16\r  JDK >= 11\r  npm\r  webpack-cli",
     "main": "index.js",
     "scripts": {
