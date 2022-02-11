@@ -1,19 +1,20 @@
 {
-  "name": "jenkin_mutibranch_build_sample",
-  "version": "1.0.0",
-  "description": "Nodejs WebProject\r ```\r Require:\r  Gradle >= 7.3.3\r  NodeJs >= 16\r  JDK >= 11\r  npm\r  webpack-cli",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nghuyy/jenkin_mutibranch_build_sample.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nghuyy/jenkin_mutibranch_build_sample/issues"
-  },
-  "homepage": "https://github.com/nghuyy/jenkin_mutibranch_build_sample#readme"
+    "name": "jenkin_mutibranch_build_sample",
+    "version": "1.1.5",
+    "versioncode": 5,
+    "description": "Nodejs WebProject\r ```\r Require:\r  Gradle >= 7.3.3\r  NodeJs >= 16\r  JDK >= 11\r  npm\r  webpack-cli",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nghuyy/jenkin_mutibranch_build_sample.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/nghuyy/jenkin_mutibranch_build_sample/issues"
+    },
+    "homepage": "https://github.com/nghuyy/jenkin_mutibranch_build_sample#readme"
 }
