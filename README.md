@@ -29,16 +29,16 @@ Trigger:
 
 
 Github Release 
-Variable: ref
-Expression: $.ref -> jsonpath 
+Variable: mess
+Expression: $.commits[0].message -> jsonpath 
   
 Filter
-Expression: ^(refs/heads/release)$
-Text: $ref  
+Expression: ^(beta: |alpha: |dev: |release: )$
+Text: $mess  
 
 ```
 
 Bitbucket:
 ```
-    Add user: huyndx@gmail.com(Jenkins Server) access for read/write package
+    Add user: ... (Jenkins Server) access for read/write package
 ```
