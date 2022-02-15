@@ -13,14 +13,11 @@ Require:
  npm
  webpack-cli
 
-How to dev?
-    Checkout dev branch
-    Change code
-    
-How to release?    
-    Checkout release branch
-    Merge code from dev
-    Push
+How to trigger automation build:  
+   Commit message begin with:
+    release: ... Create release package
+    dev: ... Create dev package
+    beta: ... Create beta package
      
 ```
 
