@@ -1,4 +1,4 @@
-## Jenkin mutibranch build sample ##
+## Jenkins Prefix Message build sample ##
 
 ****************************************
  Build with message prefix style
@@ -21,7 +21,7 @@ How to trigger automation build:
      
 ```
 
-Jenkin Config:
+Jenkins Config:
 
 ```
 Trigger:
