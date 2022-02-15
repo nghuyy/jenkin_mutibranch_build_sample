@@ -1,7 +1,7 @@
 ## Jenkin mutibranch build sample ##
 
 ****************************************
- 
+ Build with message prefix style
 ****************************************
 
 Nodejs WebProject
