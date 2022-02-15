@@ -33,7 +33,7 @@ Variable: mess
 Expression: $.commits[0].message -> jsonpath 
   
 Filter
-Expression: ^(beta: |alpha: |dev: |release: )$
+Expression: ^(beta: |alpha: |dev: |release: )
 Text: $mess  
 
 ```
