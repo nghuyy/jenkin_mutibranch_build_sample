@@ -30,7 +30,8 @@ Trigger:
 
 Github Release 
 Variable: mess
-Expression: $.commits[0].message -> jsonpath 
+Expression Github: $.commits[0].message -> jsonpath 
+Expression Bitbucket: $.push.changes[0].commits[0].message -> jsonpath 
   
 Filter
 Expression: ^(beta: |alpha: |dev: |release: )
