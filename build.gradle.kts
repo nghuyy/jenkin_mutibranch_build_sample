@@ -103,7 +103,7 @@ fun CommitSource() {
     }
     exec {
         workingDir = File(".")
-        commandLine = listOf("git", "push", "-all", "-f", "origin")
+        commandLine = listOf("git", "push", "--all", "-f", "origin")
     }
 }
 
