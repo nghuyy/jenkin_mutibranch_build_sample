@@ -24,7 +24,6 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 {from: "./LICENSE", to: "./LICENSE" },
-                {from: "./CHANGELOG.txt", to: "./CHANGELOG.txt" }
             ],
             options: {
                 concurrency: 100,
