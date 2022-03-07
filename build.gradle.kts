@@ -28,7 +28,6 @@ task("Clean") {
 }
 task("Release") {
     doLast {
-        println("Release ${git_versioncode} - ${BUILD_TIME}")
         Clean()
         InitRelease()
         Build()
