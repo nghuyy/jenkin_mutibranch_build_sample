@@ -44,3 +44,7 @@ Bitbucket:
 ```
     Add user: ... (Jenkins Server) access for read/write package
 ```
+
+/*************** Also use local with gradle binary ***************/
+
+gradle Release
