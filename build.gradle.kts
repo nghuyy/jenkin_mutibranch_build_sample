@@ -126,6 +126,7 @@ fun createPackageInfo() {
     json.run {
         replace("version", git_versioncode)
         put("build_number", oldBuildNumber + 1)
+        put("build",git_versioncode)
         put("time", BUILD_TIME)
         put("release_note", BuildMess)
         remove("devDependencies")
