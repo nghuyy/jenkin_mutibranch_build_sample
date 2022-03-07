@@ -32,6 +32,7 @@ task("Release") {
         InitRelease()
         Build()
         writeReleaseNotes()
+        CommitSource()
         Commit()
     }
 }
@@ -93,6 +94,20 @@ fun Build() {
     createPackageInfo()
 }
 
+fun CommitSource() {
+    exec {
+        workingDir = File(".")
+        commandLine = listOf("git", "add", ".")
+    }
+    exec {
+        workingDir = File(".")
+        commandLine = listOf("git", "commit", "-m", "\"${git_versioncode}: ${BuildMess}\"")
+    }
+    exec {
+        workingDir = File("./dist")
+        commandLine = listOf("git", "push", "-all", "-f", "origin")
+    }
+}
 
 fun Commit() {
     logger.info("Deploy release binary!")
