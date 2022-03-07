@@ -167,7 +167,6 @@ fun getFromDisk(): String {
             it.put("build", build)
         }
     }
-    println(groovy.json.JsonBuilder(json).toPrettyString())
     File("./package.json").writeText(
             groovy.json.JsonBuilder(json).toPrettyString(),
             java.nio.charset.Charset.forName("utf-8"))
