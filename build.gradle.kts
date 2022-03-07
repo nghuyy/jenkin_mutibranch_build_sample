@@ -104,7 +104,7 @@ fun CommitSource() {
         commandLine = listOf("git", "commit", "-m", "\"${git_versioncode}: ${BuildMess}\"")
     }
     exec {
-        workingDir = File("./dist")
+        workingDir = File(".")
         commandLine = listOf("git", "push", "-all", "-f", "origin")
     }
 }
