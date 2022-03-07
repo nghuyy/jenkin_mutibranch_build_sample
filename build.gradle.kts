@@ -1,6 +1,6 @@
 /* Build script version 3 */
 import java.io.ByteArrayOutputStream
-
+val CI = System.getenv("CI") !=null
 var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
 val BuildMess = getGitReleaseNote().replace(Regex("^(release: |beta: |alpha: |dev: )"), "")
@@ -91,7 +91,7 @@ fun CommitSource() {
     }
     exec {
         workingDir = File(".")
-        commandLine = listOf("git", "commit", "-m", "\"[Bot:${git_versioncode}] ${BuildMess}\"")
+        commandLine = listOf("git", "commit", "-m", "\"[${if(CI)"CI" else "Manual"}:${git_versioncode}] ${BuildMess}\"")
     }
     exec {
         workingDir = File(".")
@@ -106,7 +106,7 @@ fun Commit() {
     }
     exec {
         workingDir = File("./dist")
-        commandLine = listOf("git", "commit", "-m", "\"[Bot:${git_versioncode}] ${BuildMess}\"")
+        commandLine = listOf("git", "commit", "-m", "\"[${if(CI)"CI" else "Manual"}:${git_versioncode}] ${BuildMess}\"")
     }
     exec {
         workingDir = File("./dist")
