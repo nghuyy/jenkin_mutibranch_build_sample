@@ -17,9 +17,9 @@ val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
 
-var git_versioncode = if(IS_CI)"${package_info?.get("version")}.${BUILD}" else getFromPackage()
+var git_versioncode = if(IS_CI)"${package_info?.get("version").toString().replace(Regex("^(release: |beta: |alpha: |dev: )"),"")}.${BUILD}" else getFromPackage()
 println(git_versioncode)
-println("-->>$BuildMess")
+println("-->  $BuildMess")
 /***********************************************************/
 task("Clean") {
     doLast {
