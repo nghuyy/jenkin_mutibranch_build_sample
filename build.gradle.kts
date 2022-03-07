@@ -1,9 +1,9 @@
 /* Build script version 3 */
 import java.io.ByteArrayOutputStream
 val CI = System.getenv("CI") !=null
-var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
+var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_nodejs_build_sample.git"
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
-val BuildMess = getGitReleaseNote().replace(Regex("^(release: |beta: |alpha: |dev: )"), "")
+val BuildMess = getGitReleaseNote().trim().replace(Regex("^(release: |beta: |alpha: |dev: )"), "")
 val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
@@ -22,7 +22,6 @@ task("Release") {
         Clean()
         InitRelease()
         Build()
-        writeReleaseNotes()
         CommitSource()
         Commit()
     }
@@ -146,7 +145,8 @@ fun createPackageInfo() {
         put("release_note", "${BuildMess}")
         releaseNote
     }
-    File("./dist/release.json").writeText(
+
+    File("./dist/public/release.json").writeText(
             groovy.json.JsonBuilder(releaseNote).toPrettyString(),
             java.nio.charset.Charset.forName("utf-8"))
 }
@@ -174,24 +174,4 @@ fun getFromDisk(): String {
             java.nio.charset.Charset.forName("utf-8"))
 
     return build
-}
-
-fun writeReleaseNotes() {
-    val json = package_info?.toMutableMap()!!
-    var releaseNotes = ""
-    if (json.containsKey("release_date") && json.containsKey("releases")) {
-        val releases = json.get("releases") as Map<Any, Any>
-        val releaseDate = json.get("release_date") as Map<Any, Any>
-        val keys = releases.keys.reversed()
-        for (k in keys) {
-            val v = releases[k]
-            if (releaseDate.containsKey(k)) {
-                val d = releaseDate.get(k)
-                releaseNotes += "$k: $d\n$v\n"
-            } else {
-                releaseNotes += "$k: $v\n"
-            }
-        }
-        File("./dist/release_note.txt").writeText(releaseNotes)
-    }
 }
