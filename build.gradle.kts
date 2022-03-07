@@ -122,9 +122,10 @@ fun Commit() {
 fun createPackageInfo() {
     // Build package.json
     val json = package_info?.toMutableMap()!!
+    val oldBuildNumber = (package_info?.get("build_number") ?: 1) as Int
     json.run {
         replace("version", git_versioncode)
-        put("build", "1")
+        put("build_number", oldBuildNumber + 1)
         put("time", BUILD_TIME)
         put("release_note", BuildMess)
         remove("devDependencies")
