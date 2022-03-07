@@ -1,8 +1,6 @@
 /* Build script version 3 */
 import java.lang.Integer.parseInt
 import java.io.ByteArrayOutputStream
-val IS_CI = System.getenv("BUILD_NUMBER") != null
-if(IS_CI)println("Build from CI")
 var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
 var GIT_BRANCH = "master"
 var PRE_VERSION = 7
@@ -12,12 +10,12 @@ if(System.getenv("BUILD_NUMBER") != null){
 }
 
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
-val BuildMess = if(IS_CI)getGitReleaseNote().replace(Regex("^(release: |beta: |alpha: |dev: )"),"") else file("./Release.txt").takeIf { it.exists() }?.let {it.readText()}
+val BuildMess = getGitReleaseNote().replace(Regex("^(release: |beta: |alpha: |dev: )"),"")
 val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
 
-var git_versioncode = if(IS_CI)"${package_info?.get("version")}.${BUILD}" else getFromPackage()
+var git_versioncode = getFromPackage()
 println(git_versioncode)
 println("-->  $BuildMess")
 /***********************************************************/
