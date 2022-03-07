@@ -18,6 +18,7 @@ How to trigger automation build:
     release: ... Create release package
     dev: ... Create dev package
     beta: ... Create beta package
+    test: ... Create test package
      
 ```
 
@@ -34,7 +35,7 @@ Expression Github: $.commits[0].message -> jsonpath
 Expression Bitbucket: $.push.changes[0].commits[0].message -> jsonpath 
   
 Filter
-Expression: ^(beta: |alpha: |dev: |release: )
+Expression: ^(beta: |alpha: |dev: |release: |test: )
 Text: $mess  
 
 ```
