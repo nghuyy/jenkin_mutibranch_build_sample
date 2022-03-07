@@ -1,13 +1,9 @@
 /* Build script version 3 */
-import java.lang.Integer.parseInt
 import java.io.ByteArrayOutputStream
-var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
-if(System.getenv("BUILD_NUMBER") != null){
-    BUILD = parseInt(System.getenv("BUILD_NUMBER")) + PRE_VERSION
-}
 
+var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
-val BuildMess = getGitReleaseNote().replace(Regex("^(release: |beta: |alpha: |dev: )"),"")
+val BuildMess = getGitReleaseNote().replace(Regex("^(release: |beta: |alpha: |dev: )"), "")
 val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
@@ -43,43 +39,42 @@ fun Clean() { //clean project
     delete("public")
 }
 
-fun getGitReleaseNote():String{
+fun getGitReleaseNote(): String {
     val outputText: String = ByteArrayOutputStream().use { outputStream ->
         project.exec {
-            commandLine("git", "log", "-n", "1" ,"--pretty=format:%s%n%b")
+            commandLine("git", "log", "-n", "1", "--pretty=format:%s%n%b")
             standardOutput = outputStream
         }
         outputStream.toString()
     }
     return outputText
 }
+
 fun InitRelease() {
-        Clean()
-        exec {
-            commandLine = listOf("git", "clone", RELEASE_GIT_URL , "dist")
-        }
-        logger.info("Update npm source")
-        delete ("dist/public","dist/views")
-        delete ("dist/app.js","dist/package.json","dist/release_note.txt")
-        exec {
-            commandLine = listOf("npm.cmd", "install", "--yes")
-        }
+    Clean()
+    exec {
+        commandLine = listOf("git", "clone", RELEASE_GIT_URL, "dist")
+    }
+    logger.info("Update npm source")
+    delete("dist/public", "dist/views")
+    delete("dist/app.js", "dist/package.json", "dist/release_note.txt")
+    exec {
+        commandLine = listOf("npm.cmd", "install", "--yes")
+    }
 }
-
-
 
 
 fun FrontEnd() {
     logger.info("Doing build frontend!")
     exec {
-        commandLine = listOf("webpack.cmd", "--mode", "production", "--config","webpack.config.js")
+        commandLine = listOf("webpack.cmd", "--mode", "production", "--config", "webpack.config.js")
     }
 }
 
 fun BackEnd() {
     logger.info("Doing build frontend!")
     exec {
-        commandLine = listOf("webpack.cmd", "--mode", "production", "--config","webpack.backend.js")
+        commandLine = listOf("webpack.cmd", "--mode", "production", "--config", "webpack.backend.js")
     }
 }
 
@@ -120,7 +115,7 @@ fun Commit() {
     }
     exec {
         workingDir = File("./dist")
-        commandLine = listOf("git", "push", "-f", "origin", GIT_BRANCH, "--tags")
+        commandLine = listOf("git", "push", "--all", "-f", "origin")
     }
 }
 
@@ -156,58 +151,39 @@ fun createPackageInfo() {
 }
 
 
-
 fun getFromDisk(): String {
     val version = package_info?.get("version").toString()
-    val old_build_number = package_info?.get("build_number").toString()
-    var build = "${version}.${old_build_number+1}"
-    val json = package_info?.toMutableMap()!!
-    if(json.containsKey("releases")) {
-        val releases = json.get("releases") as MutableMap<Any,Any>
-        if(BuildMess.equals("") || BuildMess.equals(" ") || BuildMess == null){}else {
-            releases.values.removeIf{
-                it == BuildMess
-            }
-            releases[version_code] = "$BuildMess"
-            json["releases"] = releases
-            var releaseDate = mutableMapOf<Any, Any>()
-            if (json.containsKey("release_date")) {
-                releaseDate = json.get("release_date") as MutableMap<Any, Any>
-            }
-            releaseDate.put(version_code, BUILD_TIME)
-            json.put("release_date", releaseDate)
+    val oldBuildNumber = (package_info?.get("build_number") ?: 1) as Int
+    var build = "${version}.${oldBuildNumber + 1}"
+    val json = package_info?.toMutableMap()
+    json?.let {
+        if (it.containsKey("build_number")) {
+            it.replace("build_number", oldBuildNumber + 1)
+        } else {
+            it.put("build_number", oldBuildNumber + 1)
         }
-    }else{
-        if(BuildMess.equals("") || BuildMess.equals(" ") || BuildMess == null) {}else{
-            val releases = mutableMapOf<Any, Any>()
-            releases.put(version_code, BuildMess)
-            json.put("releases", releases)
-            val releaseDate = mutableMapOf<Any, Any>()
-            releaseDate.put(version_code, BUILD_TIME)
-            json.put("release_date", releaseDate)
+        if (it.containsKey("build")) {
+            it.replace("build", build)
+        } else {
+            it.put("build", build)
         }
     }
-   
-   json.run {
-            replace("build_number", BUILD)
-            replace("build", version_code)
-        }
-   
-   File("./package.json").writeText(
-                groovy.json.JsonBuilder(json).toPrettyString(),
-                java.nio.charset.Charset.forName("utf-8"))
-    
-    return version_code
+    println(groovy.json.JsonBuilder(json).toPrettyString())
+    File("./package.json").writeText(
+            groovy.json.JsonBuilder(json).toPrettyString(),
+            java.nio.charset.Charset.forName("utf-8"))
+
+    return build
 }
 
-fun writeReleaseNotes(){
+fun writeReleaseNotes() {
     val json = package_info?.toMutableMap()!!
     var releaseNotes = ""
-    if(json.containsKey("release_date") && json.containsKey("releases")) {
+    if (json.containsKey("release_date") && json.containsKey("releases")) {
         val releases = json.get("releases") as Map<Any, Any>
         val releaseDate = json.get("release_date") as Map<Any, Any>
         val keys = releases.keys.reversed()
-        for (k in keys){
+        for (k in keys) {
             val v = releases[k]
             if (releaseDate.containsKey(k)) {
                 val d = releaseDate.get(k)
