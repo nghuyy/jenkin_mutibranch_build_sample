@@ -1,5 +1,8 @@
+/* Build script version 3 */
 import java.lang.Integer.parseInt
-/* Define */
+import java.io.ByteArrayOutputStream
+val IS_CI = System.getenv("BUILD_NUMBER") != null
+if(IS_CI)println("Build from CI")
 var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
 var GIT_BRANCH = "master"
 var PRE_VERSION = 7
@@ -7,22 +10,21 @@ var BUILD = 38
 if(System.getenv("BUILD_NUMBER") != null){
     BUILD = parseInt(System.getenv("BUILD_NUMBER")) + PRE_VERSION
 }
-/* build style 1.2 */
+
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
-val BuildMess = file("./Release.txt").takeIf { it.exists() }?.let {it.readText()}
+val BuildMess = if(IS_CI)getGitReleaseNote() else file("./Release.txt").takeIf { it.exists() }?.let {it.readText()}
 val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
 
-var git_versioncode = getFromPackage()
-
+var git_versioncode = if(IS_CI)"${package_info?.get("version")}.${BUILD}" else getFromPackage()
+println(git_versioncode)
+/***********************************************************/
 task("Clean") {
     doLast {
         Clean()
     }
 }
-
-
 task("Release") {
     doLast {
         println("Release ${git_versioncode} - ${BUILD_TIME}")
@@ -33,23 +35,28 @@ task("Release") {
         Commit()
     }
 }
-
-
-
-
 task("Build") {
     doLast {
         Build()
     }
 }
-
-
+/***********************************************************/
 fun Clean() { //clean project
     delete("dist")
     delete("docs")
     delete("public")
 }
 
+fun getGitReleaseNote():String{
+    val outputText: String = ByteArrayOutputStream().use { outputStream ->
+        project.exec {
+            commandLine("git", "log", "-n", "1" ,"--pretty=format:%s%n%b")
+            standardOutput = outputStream
+        }
+        outputStream.toString()
+    }
+    return outputText
+}
 fun InitRelease() {
         Clean()
         exec {
@@ -181,13 +188,15 @@ fun getFromPackage(): String {
             json.put("release_date", releaseDate)
         }
     }
-    json.run {
-        replace("build", BUILD)
-        replace("version_code", version_code)
+    if(!IS_CI) {
+        json.run {
+            replace("build", BUILD)
+            replace("version_code", version_code)
+        }
+        File("./package.json").writeText(
+                groovy.json.JsonBuilder(json).toPrettyString(),
+                java.nio.charset.Charset.forName("utf-8"))
     }
-    File("./package.json").writeText(
-            groovy.json.JsonBuilder(json).toPrettyString(),
-            java.nio.charset.Charset.forName("utf-8"))
     return version_code
 }
 
