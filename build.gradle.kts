@@ -2,9 +2,6 @@
 import java.lang.Integer.parseInt
 import java.io.ByteArrayOutputStream
 var RELEASE_GIT_URL = "git@bitbucket.org:huyndx/jenkin_mutibranch_build_sample.git"
-var GIT_BRANCH = "master"
-var PRE_VERSION = 7
-var BUILD = 38
 if(System.getenv("BUILD_NUMBER") != null){
     BUILD = parseInt(System.getenv("BUILD_NUMBER")) + PRE_VERSION
 }
@@ -15,7 +12,7 @@ val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
 
-var git_versioncode = getFromPackage()
+var git_versioncode = getFromDisk()
 println(git_versioncode)
 println("-->  $BuildMess")
 /***********************************************************/
@@ -158,23 +155,12 @@ fun createPackageInfo() {
             java.nio.charset.Charset.forName("utf-8"))
 }
 
-fun getVersionCode(): String {
-    try {
-        val code = java.io.ByteArrayOutputStream()
-        exec {
-            workingDir = File("./")
-            commandLine = listOf("git", "describe", "--tags", "--abbrev=0")
-            standardOutput = code
-        }
-        return code.toString().trim()
-    } catch (ignored: java.lang.Exception) {
-        return ""
-    }
-}
 
-fun getFromPackage(): String {
+
+fun getFromDisk(): String {
     val version = package_info?.get("version").toString()
-    var version_code = "${version}.${BUILD}"
+    val old_build_number = package_info?.get("build_number").toString()
+    var build = "${version}.${old_build_number+1}"
     val json = package_info?.toMutableMap()!!
     if(json.containsKey("releases")) {
         val releases = json.get("releases") as MutableMap<Any,Any>
@@ -204,7 +190,7 @@ fun getFromPackage(): String {
    
    json.run {
             replace("build_number", BUILD)
-            replace("build_code", version_code)
+            replace("build", version_code)
         }
    
    File("./package.json").writeText(
