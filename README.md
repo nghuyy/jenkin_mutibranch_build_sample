@@ -25,7 +25,7 @@ Jenkins Config:
 
 ```
 Trigger:
-  https://build.vnapps.com/generic-webhook-trigger/invoke?token=
+  https://example.com/generic-webhook-trigger/invoke?token=
 
 
 Github Release 
