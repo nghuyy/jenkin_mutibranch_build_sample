@@ -19,6 +19,7 @@ val package_info = file("./package.json").takeIf { it.exists() }?.let {
 
 var git_versioncode = if(IS_CI)"${package_info?.get("version")}.${BUILD}" else getFromPackage()
 println(git_versioncode)
+println("-->>$BuildMess")
 /***********************************************************/
 task("Clean") {
     doLast {
