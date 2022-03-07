@@ -188,15 +188,16 @@ fun getFromPackage(): String {
             json.put("release_date", releaseDate)
         }
     }
-    if(!IS_CI) {
-        json.run {
-            replace("build", BUILD)
-            replace("version_code", version_code)
+   
+   json.run {
+            replace("build_number", BUILD)
+            replace("build_code", version_code)
         }
-        File("./package.json").writeText(
+   
+   File("./package.json").writeText(
                 groovy.json.JsonBuilder(json).toPrettyString(),
                 java.nio.charset.Charset.forName("utf-8"))
-    }
+    
     return version_code
 }
 
