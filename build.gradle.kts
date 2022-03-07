@@ -12,12 +12,12 @@ if(System.getenv("BUILD_NUMBER") != null){
 }
 
 var BUILD_TIME = java.text.SimpleDateFormat("hh:mm aa dd/MM/yyyy").format(java.util.Date())
-val BuildMess = if(IS_CI)getGitReleaseNote() else file("./Release.txt").takeIf { it.exists() }?.let {it.readText()}
+val BuildMess = if(IS_CI)getGitReleaseNote().replace(Regex("^(release: |beta: |alpha: |dev: )"),"") else file("./Release.txt").takeIf { it.exists() }?.let {it.readText()}
 val package_info = file("./package.json").takeIf { it.exists() }?.let {
     groovy.json.JsonSlurper().parseText(it.readText())
 } as Map<*, *>?
 
-var git_versioncode = if(IS_CI)"${package_info?.get("version").toString().replace(Regex("^(release: |beta: |alpha: |dev: )"),"")}.${BUILD}" else getFromPackage()
+var git_versioncode = if(IS_CI)"${package_info?.get("version")}.${BUILD}" else getFromPackage()
 println(git_versioncode)
 println("-->  $BuildMess")
 /***********************************************************/
