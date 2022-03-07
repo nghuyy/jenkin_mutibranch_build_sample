@@ -26,9 +26,11 @@
         "webpack-node-externals": "^3.0.0"
     },
     "releases": {
-        "1.1.38": "Add bitbucket Expression\n"
+        "1.1.38": "Add bitbucket Expression\n",
+        "1.1.53": ".\n"
     },
     "release_date": {
-        "1.1.38": "08:37 AM 07/03/2022"
+        "1.1.38": "08:37 AM 07/03/2022",
+        "1.1.53": "07:09 PM 06/03/2022"
     }
 }
