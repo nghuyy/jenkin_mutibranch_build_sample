@@ -25,6 +25,6 @@
         "webpack": "^5.68.0",
         "webpack-node-externals": "^3.0.0"
     },
-    "build_number": 53,
-    "build": "1.1.53"
+    "build_number": 54,
+    "build": "1.1.54"
 }
