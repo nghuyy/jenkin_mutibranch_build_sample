@@ -91,7 +91,7 @@ fun CommitSource() {
     }
     exec {
         workingDir = File(".")
-        commandLine = listOf("git", "commit", "-m", "\"${git_versioncode}: ${BuildMess}\"")
+        commandLine = listOf("git", "commit", "-m", "\"[Bot:${git_versioncode}] ${BuildMess}\"")
     }
     exec {
         workingDir = File(".")
@@ -100,14 +100,13 @@ fun CommitSource() {
 }
 
 fun Commit() {
-    logger.info("Deploy release binary!")
     exec {
         workingDir = File("./dist")
         commandLine = listOf("git", "add", ".")
     }
     exec {
         workingDir = File("./dist")
-        commandLine = listOf("git", "commit", "-m", "\"${git_versioncode}: ${BuildMess}\"")
+        commandLine = listOf("git", "commit", "-m", "\"[Bot:${git_versioncode}] ${BuildMess}\"")
     }
     exec {
         workingDir = File("./dist")
